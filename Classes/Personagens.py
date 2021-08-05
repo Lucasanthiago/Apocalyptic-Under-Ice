@@ -18,7 +18,6 @@ class Personagem:
         self.numero_sprites = 10
         self.tempo_animacao = 100
         self.personagem = Sprite(dir_imagem, self.numero_sprites)
-        self.inventario = [[0] * 3] * 3
 
         # Dados do Personagem
         self.velocidade = 200
@@ -100,25 +99,6 @@ class Personagem:
             fundo.y = 0
         elif fundo.y + fundo.height < janela.height:
             fundo.y = janela.height - fundo.height
-
-    def adiciona_no_inventario(self, item):
-        ind = self.proximo_espaco_livre_inventario()
-        if not ind:
-            self.inventario[ind[0]][ind[1]] = item
-
-    def proximo_espaco_livre_inventario(self):
-        index = [None, None]
-        inventario = self.inventario
-        for i in range(len(inventario)):
-            try:
-                index[0] = i
-                index[1] = inventario[i].index(0)
-            except ValueError:
-                if i == len(inventario) - 1:
-                    return False
-                else:
-                    pass
-        return index
 
 
 class Inimigos(Personagem):

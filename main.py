@@ -1,5 +1,6 @@
 from Classes.Personagens import *
 from Classes.VariaveisGerais import InformacoesBase
+from Classes.Inventario import *
 from PPlay.gameimage import *
 
 # Inicialização
@@ -19,6 +20,11 @@ sprite_inimigo = inimigo.sprite()
 aliado = Aliados("Imagens/teste.png", janela, fundo, sprite_jogador, velocidade_jogador, "FalaTeste")
 sprite_aliado = aliado.sprite()
 
+# Inventario
+inventario = Inventario(janela)
+bola = Bola()
+
+
 sprite_inimigo.x = 200
 sprite_inimigo.y = 200
 
@@ -30,11 +36,14 @@ while True:
     # Entrada de Dados
 
     # Updates
+
     aliado.inteligencia_artificial()
-    if Keyboard().key_pressed("P"):
-        jogador.inventario = [[1, 1, 1], [1, 0, 0], [0, 0, 0]]
-        print(jogador.proximo_espaco_livre_inventario())
-    # Game Physics
+    if Keyboard().key_pressed("K"):
+        inventario.adiciona_no_inventario(bola.imagem_bola)
+
+    if Keyboard().key_pressed("I"):
+        # Game Physics
+        inventario.mostra_inventario()
 
     # Física do personagem em relação ao mapa
     jogador.fisica()
