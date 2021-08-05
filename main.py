@@ -7,36 +7,47 @@ janela = InformacoesBase.janela
 fundo = GameImage("Imagens/FundoMenuPrincipal.png")
 
 # Personagem Principal
-personagem_principal = Personagem("Imagens/teste.png")
-sprite_personagem_principal = personagem_principal.sprite()
-velocidade_personagem_principal = personagem_principal.velocidade
+jogador = Personagem("Imagens/teste.png", janela, fundo)
+sprite_jogador = jogador.sprite()
+velocidade_jogador = jogador.velocidade
 
 # Inimigo
-inimigo = Inimigos("Imagens/teste.png")
+inimigo = Inimigos("Imagens/teste.png", janela, fundo, sprite_jogador, velocidade_jogador)
 sprite_inimigo = inimigo.sprite()
+
+# Aliado
+aliado = Aliados("Imagens/teste.png", janela, fundo, sprite_jogador, velocidade_jogador, "FalaTeste")
+sprite_aliado = aliado.sprite()
 
 sprite_inimigo.x = 200
 sprite_inimigo.y = 200
+
+sprite_aliado.x = 400
+sprite_aliado.y = 400
 
 # Game Loop
 while True:
     # Entrada de Dados
 
     # Updates
-
+    aliado.inteligencia_artificial()
+    if Keyboard().key_pressed("P"):
+        jogador.inventario = [[1, 1, 1], [1, 0, 0], [0, 0, 0]]
+        print(jogador.proximo_espaco_livre_inventario())
     # Game Physics
 
     # Física do personagem em relação ao mapa
-    personagem_principal.fisica(janela, fundo)
-    inimigo.fisica_inimigo(janela, fundo, sprite_personagem_principal, velocidade_personagem_principal)
-    inimigo.inteligencia_artificial(janela, sprite_personagem_principal)
+    jogador.fisica()
+    inimigo.fisica_outros()
+    inimigo.inteligencia_artificial()
+    aliado.fisica_outros()
 
     # Desenho
     fundo.draw()
-    sprite_personagem_principal.draw()
-    sprite_personagem_principal.update()
+    sprite_jogador.draw()
+    sprite_jogador.update()
     sprite_inimigo.draw()
-
+    sprite_aliado.draw()
     janela.update()
 
     # Encerramento
