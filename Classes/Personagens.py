@@ -24,7 +24,7 @@ class Personagem:
 
     def sprite(self):
         # Importa as imagens do personagem principal
-        self.personagem.set_sequence_time(0, self.numero_sprites - 1, self.tempo_animacao, True)
+        self.personagem.set_sequence_time(0, self.numero_sprites, self.tempo_animacao, True)
         return self.personagem
 
     def fisica(self):
