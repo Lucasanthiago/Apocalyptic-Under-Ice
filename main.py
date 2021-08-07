@@ -1,6 +1,7 @@
 from Classes.Personagens import *
 from Classes.VariaveisGerais import InformacoesBase
 from Classes.Inventario import *
+from Classes.Armas import *
 from PPlay.gameimage import *
 
 # Inicialização
@@ -23,7 +24,6 @@ sprite_aliado = aliado.sprite()
 # Inventario
 inventario = Inventario(janela)
 bola = Bola()
-
 
 sprite_inimigo.x = 200
 sprite_inimigo.y = 200
@@ -57,6 +57,7 @@ while True:
     sprite_jogador.update()
     sprite_inimigo.draw()
     sprite_aliado.draw()
+
     janela.update()
 
     # Encerramento
