@@ -1,7 +1,7 @@
 from Classes.Personagens import *
 from Classes.VariaveisGerais import InformacoesBase
 from Classes.Inventario import *
-from Classes.Armas import *
+from Classes.Arma import *
 from PPlay.gameimage import *
 
 # Inicialização
@@ -24,6 +24,24 @@ sprite_aliado = aliado.sprite()
 # Inventario
 inventario = Inventario(janela)
 bola = Bola()
+
+# Pistola
+pistola = Pistola("Imagens/pistola.png")
+sprite_psitola = pistola.retorna_sprite_pistola()
+
+# Faca
+faca = Faca("Imagens/arco.png")
+sprite_faca = faca.retorna_sprite_faca()
+
+# Arco
+arco = Arco("Imagens/pistola.png")
+sprite_arco = arco.retorna_sprite_arco()
+
+# Fuzil
+fuzil = Fuzil("Imagens/fuzil.png")
+sprite_fuzil = fuzil.retorna_sprite_fuzil()
+
+
 
 sprite_inimigo.x = 200
 sprite_inimigo.y = 200
@@ -57,6 +75,11 @@ while True:
     sprite_jogador.update()
     sprite_inimigo.draw()
     sprite_aliado.draw()
+    sprite_psitola.draw()
+    sprite_arco.draw()
+    sprite_faca.draw()
+    sprite_fuzil.draw()
+
 
     janela.update()
 
