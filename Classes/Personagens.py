@@ -15,7 +15,7 @@ class Personagem:
         self.teclado = Keyboard()
 
         # Configurações Animação
-        self.numero_sprites = 10
+        self.numero_sprites = 1
         self.tempo_animacao = 100
         self.personagem = Sprite(dir_imagem, self.numero_sprites)
 
@@ -48,9 +48,13 @@ class Personagem:
 
         # Movimento no Eixo X
         if 0 <= personagem.x <= janela.width - personagem.width:
+            print("P")
             if round(personagem.x) == round(janela.width / 2 - personagem.width / 2):
+                print("R")
                 if teclado.key_pressed("RIGHT"):
+                    print("T")
                     if fundo.x + fundo.width > janela.width:
+                        print("F")
                         fundo.x -= vel
                     else:
                         personagem.move_key_x(vel)

@@ -2,4 +2,4 @@ from PPlay.window import *
 
 
 class InformacoesBase:
-    janela = Window(640, 480)
+    janela = Window(1280, 720)

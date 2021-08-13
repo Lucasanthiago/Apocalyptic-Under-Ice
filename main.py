@@ -6,19 +6,19 @@ from PPlay.gameimage import *
 
 # Inicialização
 janela = InformacoesBase.janela
-fundo = GameImage("Imagens/FundoMenuPrincipal.png")
+fundo = GameImage("Imagens/Cenario-0.png")
 
 # Personagem Principal
-jogador = Personagem("Imagens/teste.png", janela, fundo)
+jogador = Personagem("Imagens/personagem-parado.png", janela, fundo)
 sprite_jogador = jogador.sprite()
 velocidade_jogador = jogador.velocidade
 
 # Inimigo
-inimigo = Inimigos("Imagens/teste.png", janela, fundo, sprite_jogador, velocidade_jogador)
+inimigo = Inimigos("Imagens/personagem-parado.png", janela, fundo, sprite_jogador, velocidade_jogador)
 sprite_inimigo = inimigo.sprite()
 
 # Aliado
-aliado = Aliados("Imagens/teste.png", janela, fundo, sprite_jogador, velocidade_jogador, "FalaTeste")
+aliado = Aliados("Imagens/personagem-parado.png", janela, fundo, sprite_jogador, velocidade_jogador, "FalaTeste")
 sprite_aliado = aliado.sprite()
 
 # Inventario
@@ -72,13 +72,13 @@ while True:
     # Desenho
     fundo.draw()
     sprite_jogador.draw()
-    sprite_jogador.update()
-    sprite_inimigo.draw()
-    sprite_aliado.draw()
-    sprite_psitola.draw()
-    sprite_arco.draw()
-    sprite_faca.draw()
-    sprite_fuzil.draw()
+    #sprite_jogador.update()
+    #sprite_inimigo.draw()
+    #sprite_aliado.draw()
+    #sprite_psitola.draw()
+    #sprite_arco.draw()
+    #sprite_faca.draw()
+    #sprite_fuzil.draw()
 
 
     janela.update()
