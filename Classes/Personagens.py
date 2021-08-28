@@ -3,39 +3,35 @@ from PPlay.keyboard import *
 from PPlay.sprite import *
 from PPlay.mouse import *
 from Classes.Falas import *
+from Classes.VariaveisGerais import *
 import math
 
 
 class Personagem:
 
-    def __init__(self, dir_imagem, janela, fundo):
+    def __init__(self):
         # Dados Gerais
-        self.janela = janela
-        self.fundo = fundo
         self.teclado = Keyboard()
 
         # Configurações Animação
         self.numero_sprites = 1
         self.tempo_animacao = 100
-        self.personagem = Sprite(dir_imagem, self.numero_sprites)
+        self.personagem = Sprite("Imagens/personagem-parado.png", self.numero_sprites)
 
         # Dados do Personagem
-        self.velocidade = 200
+        self.velocidade = 300
 
-    def sprite(self):
-        # Importa as imagens do personagem principal
-        self.personagem.set_sequence_time(0, self.numero_sprites, self.tempo_animacao, True)
-        return self.personagem
-
-    def fisica(self):
+    def fisica(self, janela, sprite_jogador):
         # Atribuições
-        personagem = self.personagem
-        vel = self.velocidade
-        janela = self.janela
-        fundo = self.fundo
-
+        personagem = sprite_jogador
+        # Resetando Movimentos
+        InformacoesBase.movendo_esquerda = False
+        InformacoesBase.movendo_direita = False
+        InformacoesBase.movendo_baixo = False
+        InformacoesBase.movendo_cima = False
         # Variaveis Principais
         teclado = Keyboard()
+        vel = self.velocidade
         vel_diagonal = vel / sqrt(2)
         vel_padrao = vel
 
@@ -45,53 +41,27 @@ class Personagem:
             vel = vel_diagonal * janela.delta_time()
         else:
             vel = vel_padrao * janela.delta_time()
-
-        # Movimento no Eixo X
+        # Movimento no Eixo X e Y
         if 0 <= personagem.x <= janela.width - personagem.width:
-            print("P")
-            if round(personagem.x) == round(janela.width / 2 - personagem.width / 2):
-                print("R")
-                if teclado.key_pressed("RIGHT"):
-                    print("T")
-                    if fundo.x + fundo.width > janela.width:
-                        print("F")
-                        fundo.x -= vel
-                    else:
-                        personagem.move_key_x(vel)
-                if teclado.key_pressed("LEFT"):
-                    if fundo.x < 0:
-                        fundo.x += vel
-                    else:
-                        personagem.move_key_x(vel)
-            else:
-                personagem.move_key_x(vel)
+            if teclado.key_pressed("RIGHT"):
+                personagem.x += vel
+                InformacoesBase.movendo_direita = True
+            elif teclado.key_pressed("LEFT"):
+                personagem.x -= vel
+                InformacoesBase.movendo_esquerda = True
 
+        if 0 <= personagem.y <= janela.height - personagem.height:
+            if teclado.key_pressed("DOWN"):
+                personagem.y += vel
+                InformacoesBase.movendo_baixo = True
+            elif teclado.key_pressed("UP"):
+                personagem.y -= vel
+                InformacoesBase.movendo_cima = True
         # Colisão com as laterais
         if personagem.x < 0:
             personagem.x = 0
         elif personagem.x > janela.width - personagem.width:
             personagem.x = janela.width - personagem.width
-
-        if fundo.x > 0:
-            fundo.x = 0
-        elif fundo.x + fundo.width < janela.width:
-            fundo.x = janela.width - fundo.width
-
-        # Movimento no Eixo Y
-        if 0 <= personagem.y <= janela.height - personagem.height:
-            if round(personagem.y) == round(janela.height / 2 - personagem.height / 2):
-                if teclado.key_pressed("DOWN"):
-                    if fundo.y + fundo.height > janela.height:
-                        fundo.y -= vel
-                    else:
-                        personagem.move_key_y(vel)
-                if teclado.key_pressed("UP"):
-                    if fundo.y < 0:
-                        fundo.y += vel
-                    else:
-                        personagem.move_key_y(vel)
-            else:
-                personagem.move_key_y(vel)
 
         # Colisão com o topo e a base
         if personagem.y < 0:
@@ -99,16 +69,13 @@ class Personagem:
         elif personagem.y > janela.height - personagem.height:
             personagem.y = janela.height - personagem.height
 
-        if fundo.y > 0:
-            fundo.y = 0
-        elif fundo.y + fundo.height < janela.height:
-            fundo.y = janela.height - fundo.height
+
 
 
 class Inimigos(Personagem):
 
-    def __init__(self, dir_imagem, janela, fundo, sprite_jogador, velocidade_jogador):
-        super().__init__(dir_imagem, janela, fundo)
+    def __init__(self, dir_imagem, fundo, sprite_jogador, velocidade_jogador):
+        super().__init__(dir_imagem, fundo)
 
         # Configurações Animação
         self.numero_sprites = 10
@@ -124,14 +91,13 @@ class Inimigos(Personagem):
         self.jogador = sprite_jogador
         self.velocidade_jogador = velocidade_jogador
 
-    def fisica_outros(self):
+    def fisica_outros(self, janela):
         # Atribuições
         teclado = Keyboard()
         inimigo = self.personagem
         vel = self.velocidade_jogador
         vel_diagonal = vel / sqrt(2)
         vel_padrao = vel
-        janela = self.janela
         fundo = self.fundo
         jogador = self.jogador
 
@@ -143,7 +109,9 @@ class Inimigos(Personagem):
             vel = vel_padrao * janela.delta_time()
 
         # Física Eixo X
-        if round(jogador.x) == round(janela.width / 2 - jogador.width / 2):
+        if round(janela.width / 2 - jogador.width / 2) - 10 \
+                    < round(jogador.y) < \
+                    round(janela.width / 2 - jogador.width / 2) + 10:
             if teclado.key_pressed("RIGHT"):
                 if fundo.x + fundo.width > janela.width:
                     inimigo.x -= vel
@@ -151,7 +119,9 @@ class Inimigos(Personagem):
                 if fundo.x < 0:
                     inimigo.x += vel
         # Física Eixo Y
-        if round(jogador.y) == round(janela.height / 2 - jogador.height / 2):
+        if round(janela.height / 2 - jogador.height / 2) - 10 \
+                    < round(jogador.y) < \
+                    round(janela.height / 2 - jogador.height / 2) + 10:
             if teclado.key_pressed("DOWN"):
                 if fundo.y + fundo.height > janela.height:
                     inimigo.y -= vel
@@ -159,11 +129,10 @@ class Inimigos(Personagem):
                 if fundo.y < 0:
                     inimigo.y += vel
 
-    def inteligencia_artificial(self):
+    def inteligencia_artificial(self, janela):
         # Atribuições
         inimigo = self.personagem
         jogador = self.jogador
-        janela = self.janela
 
         # Calcular as coordenadas do centro do jogador e inimigo
         inimigo_x = inimigo.x + inimigo.width / 2
@@ -199,8 +168,8 @@ class Inimigos(Personagem):
 
 
 class Aliados(Inimigos):
-    def __init__(self, dir_imagem, janela, fundo, sprite_jogador, velocidade_jogador, aliado):
-        super().__init__(dir_imagem, janela, fundo, sprite_jogador, velocidade_jogador)
+    def __init__(self, dir_imagem, fundo, sprite_jogador, velocidade_jogador, aliado):
+        super().__init__(dir_imagem, fundo, sprite_jogador, velocidade_jogador)
 
         # Configurações Animação
         self.numero_sprites = 10
@@ -215,7 +184,7 @@ class Aliados(Inimigos):
         # Dados do jogador
         self.jogador = sprite_jogador
 
-    def inteligencia_artificial(self):
+    def inteligencia_artificial(self, janela):
         # Atribuições
         jogador = self.jogador
         personagem = self.personagem
@@ -231,11 +200,10 @@ class Aliados(Inimigos):
         equacao_circulo = (jogador_x - inimigo_x) ** 2 + (jogador_y - inimigo_y) ** 2
 
         if equacao_circulo <= self.raio_de_conversa ** 2 and teclado.key_pressed("F"):
-            self.conversa()
+            self.conversa(janela)
 
-    def conversa(self):
+    def conversa(self, janela):
         # Atribuições
-        janela = self.janela
         conversar = True
         mouse = Mouse()
         falas = getattr(Falas, self.aliado)
