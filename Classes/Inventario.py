@@ -46,7 +46,6 @@ class Inventario:
         if ind != "Sem Espaço":
             self.inventario[ind] = item
 
-
     def retira_do_inventario(self, item):
         # Procura as coordenadas do item no inventário
         try:
@@ -61,9 +60,6 @@ class Inventario:
     def mostra_inventario(self):
         # Atribuições
         teclado = Keyboard()
-        mouse = Mouse()
-        janela = self.janela
-
         # Loop do Inventario
         while not teclado.key_pressed("Q"):
             # Desenhos
@@ -71,9 +67,9 @@ class Inventario:
             # Desenha os itens do inventário
             for i in range(len(self.inventario)):
                 if self.inventario[i] != 0:
-                    self.inventario[i].x = self.posicoes_item[i][0][0] + 17
-                    self.inventario[i].y = self.posicoes_item[i][0][1] + 17
-                    self.inventario[i].draw()
+                    self.inventario[i].imagem.x = self.posicoes_item[i][0][0] + 17
+                    self.inventario[i].imagem.y = self.posicoes_item[i][0][1] + 17
+                    self.inventario[i].desenha()
             # Updates
             self.janela.update()
 

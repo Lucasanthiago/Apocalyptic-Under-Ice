@@ -1,6 +1,11 @@
+
+
+""" Verifica se houve colisão com um retângulo, e se não houve, ele mostra os lados em que o player esta
+    dentro da area de colisao """
+
 def colisao_retangulo(sprite_jogador, retangulo, atras):
     if atras:
-        sprite_jogador_y = sprite_jogador.y + sprite_jogador.height
+        sprite_jogador_y = sprite_jogador.y + sprite_jogador.height - 20
     else:
         sprite_jogador_y = sprite_jogador.y
     # Inicializações
@@ -33,5 +38,4 @@ class Colisoes():
 
     def __init__(self):
         pass
-    ''' Verifica se houve colisão com um retângulo, e se não houve, ele mostra os lados em que o player esta
-    dentro da area de colisao'''
+

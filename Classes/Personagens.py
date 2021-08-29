@@ -19,6 +19,8 @@ class Personagem:
         self.personagem = Sprite("Imagens/personagem-parado.png", self.numero_sprites)
 
         # Dados do Personagem
+        self.vida = 100
+        self.vida_maxima = 100
         self.velocidade = 300
 
     def fisica(self, janela, sprite_jogador):
@@ -70,8 +72,6 @@ class Personagem:
             personagem.y = janela.height - personagem.height
 
 
-
-
 class Inimigos(Personagem):
 
     def __init__(self, dir_imagem, fundo, sprite_jogador, velocidade_jogador):
@@ -110,8 +110,8 @@ class Inimigos(Personagem):
 
         # Física Eixo X
         if round(janela.width / 2 - jogador.width / 2) - 10 \
-                    < round(jogador.y) < \
-                    round(janela.width / 2 - jogador.width / 2) + 10:
+                < round(jogador.y) < \
+                round(janela.width / 2 - jogador.width / 2) + 10:
             if teclado.key_pressed("RIGHT"):
                 if fundo.x + fundo.width > janela.width:
                     inimigo.x -= vel
@@ -120,8 +120,8 @@ class Inimigos(Personagem):
                     inimigo.x += vel
         # Física Eixo Y
         if round(janela.height / 2 - jogador.height / 2) - 10 \
-                    < round(jogador.y) < \
-                    round(janela.height / 2 - jogador.height / 2) + 10:
+                < round(jogador.y) < \
+                round(janela.height / 2 - jogador.height / 2) + 10:
             if teclado.key_pressed("DOWN"):
                 if fundo.y + fundo.height > janela.height:
                     inimigo.y -= vel
