@@ -22,7 +22,7 @@ class Personagem:
         self.vida = 100
         self.vida_maxima = 100
         self.velocidade = 300
-        self.arma_equipada = None
+        self.arma_equipada = 1
 
     def fisica(self, janela, sprite_jogador):
         # Atribuições

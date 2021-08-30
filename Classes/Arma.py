@@ -1,6 +1,7 @@
 from PPlay.sprite import *
 from PPlay.gameimage import *
-
+from PPlay.keyboard import *
+import math
 
 class Pistola:
     def __init__(self):
@@ -9,6 +10,7 @@ class Pistola:
         self.imagem.y = 593
         self.dano = 15
         self.raio_proximo = 70
+        self.tiros = []
 
     def desenha(self):
         self.imagem.draw()
@@ -25,8 +27,24 @@ class Pistola:
             return True
         return False
 
-    def atira(self):
-        print("ATIRANDO")
+    def atirar(self, jogador, janela):
+        if Keyboard().key_pressed("SPACE"):
+            tiro = Sprite("Imagens/Bola.png")
+            print(tiro.width)
+            tiro.set_position(jogador.x + jogador.width / 2, jogador.y - tiro.height)
+            self.tiros.append(tiro)
+
+        variacao = 0
+        for shot in self.tiros:
+            shot.x = shot.x + 300 * janela.delta_time()
+            if shot.x <= 0 - shot.width:
+                self.tiros.remove(shot)
+                variacao += 1
+
+    def desenha_tiro(self):
+        for i in range(len(self.tiros)):
+            self.tiros[i].draw()
+
 
 class Faca:
     def __init__(self, dir_imagem):
