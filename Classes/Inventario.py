@@ -32,7 +32,7 @@ class Inventario:
                 inicio_x += incremento
                 g += 1
 
-    def mostra_lista_inventario(self):
+    def lista_inventario(self):
         return self.inventario
 
     def adiciona_no_inventario(self, item):

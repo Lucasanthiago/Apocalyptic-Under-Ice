@@ -39,7 +39,6 @@ while True:
     cenario_atual = eval(cenario_atual.proxima_fase(sprite_jogador))
     itens_cenario_atual = cenario_atual.itens
 
-
     ################### Game Physics ##########################
 
     # Fisica jogador

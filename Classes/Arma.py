@@ -25,6 +25,8 @@ class Pistola:
             return True
         return False
 
+    def atira(self):
+        print("ATIRANDO")
 
 class Faca:
     def __init__(self, dir_imagem):
