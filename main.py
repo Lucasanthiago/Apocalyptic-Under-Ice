@@ -11,6 +11,7 @@ teclado = Keyboard()
 
 # Inventário
 inventario = Inventario(janela)
+tecla_solta = True
 
 # Cenarios
 cenario_0 = Cenario0()
@@ -39,6 +40,8 @@ while True:
     cenario_atual = eval(cenario_atual.proxima_fase(sprite_jogador))
     itens_cenario_atual = cenario_atual.itens
 
+    if not teclado.key_pressed("I"):
+        tecla_solta = True
     ################### Game Physics ##########################
 
     # Fisica jogador
@@ -93,7 +96,8 @@ while True:
             sprite_jogador_E.draw()
 
     barra_de_vida.update()
-    if teclado.key_pressed("I"):
+    if teclado.key_pressed("I") and tecla_solta:
+        tecla_solta = False
         inventario.mostra_inventario()
     janela.update()
     # Encerramento

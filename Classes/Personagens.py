@@ -21,7 +21,7 @@ class Personagem:
         # Dados do Personagem
         self.vida = 100
         self.vida_maxima = 100
-        self.velocidade = 300
+        self.velocidade = 500
         self.arma_equipada = 1
 
     def fisica(self, janela, sprite_jogador):
@@ -39,25 +39,25 @@ class Personagem:
         vel_padrao = vel
 
         # Controla a velocidade do jogador
-        if (teclado.key_pressed("RIGHT") or teclado.key_pressed("LEFT")) and (
-                teclado.key_pressed("UP") or teclado.key_pressed("DOWN")):
+        if (teclado.key_pressed("D") or teclado.key_pressed("A")) and (
+                teclado.key_pressed("W") or teclado.key_pressed("S")):
             vel = vel_diagonal * janela.delta_time()
         else:
             vel = vel_padrao * janela.delta_time()
         # Movimento no Eixo X e Y
         if 0 <= personagem.x <= janela.width - personagem.width:
-            if teclado.key_pressed("RIGHT"):
+            if teclado.key_pressed("D"):
                 personagem.x += vel
                 InformacoesBase.movendo_direita = True
-            elif teclado.key_pressed("LEFT"):
+            elif teclado.key_pressed("A"):
                 personagem.x -= vel
                 InformacoesBase.movendo_esquerda = True
 
         if 0 <= personagem.y <= janela.height - personagem.height:
-            if teclado.key_pressed("DOWN"):
+            if teclado.key_pressed("S"):
                 personagem.y += vel
                 InformacoesBase.movendo_baixo = True
-            elif teclado.key_pressed("UP"):
+            elif teclado.key_pressed("W"):
                 personagem.y -= vel
                 InformacoesBase.movendo_cima = True
         # Colisão com as laterais

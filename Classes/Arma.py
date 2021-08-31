@@ -6,6 +6,7 @@ import math
 class Pistola:
     def __init__(self):
         self.imagem = GameImage("Imagens/pistola.png")
+        self.imagem_escalada = GameImage("Imagens/pistola_escalada.png")
         self.imagem.x = 1215
         self.imagem.y = 593
         self.dano = 15
@@ -14,6 +15,9 @@ class Pistola:
 
     def desenha(self):
         self.imagem.draw()
+
+    def desenha_imagem_escalada(self):
+        self.imagem_escalada.draw()
 
     def verifica_proximo(self, sprite_jogador):
         jogador_x = sprite_jogador.x + sprite_jogador.width
