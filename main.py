@@ -1,4 +1,4 @@
-from Classes.Personagens import Personagem
+from Classes.Personagens import *
 from Classes.VariaveisGerais import InformacoesBase
 from Classes.Cenarios import *
 from PPlay.sprite import *
@@ -20,14 +20,11 @@ cenario_atual = cenario_0
 
 # Jogador
 jogador = Personagem()
-sprite_jogador = Sprite("Imagens/personagem-parado.png", 1)
-sprite_jogador_E = Sprite("Imagens/personagem-parado-E.png", 1)
-sprite_jogador_correndo_D = Sprite("Imagens/personagem-correndo-direita.png", 6)
-sprite_jogador_correndo_D.set_sequence_time(0, 6, 120, True)
-sprite_jogador_correndo_E = Sprite("Imagens/personagem-correndo-esquerda.png", 6)
-sprite_jogador_correndo_E.set_sequence_time(0, 6, 120, True)
 ultimo_mov_D = True
+sprite_jogador = jogador.sprite_jogador
 sprite_jogador.y = 400
+
+inimigo = Inimigos()
 
 # Barra de Vida
 barra_de_vida = BarraVida(jogador, janela)
@@ -36,10 +33,16 @@ barra_de_vida = BarraVida(jogador, janela)
 while True:
     ################### Entrada de Dados ######################
 
+    sprite_jogador = jogador.sprite_jogador
+    sprite_jogador_correndo_D = jogador.sprite_jogador_correndo_D
+    sprite_jogador_correndo_E = jogador.sprite_jogador_correndo_E
+    sprite_jogador_E = jogador.sprite_jogador_E
+
     ################### Updates ###############################
+
     cenario_atual = eval(cenario_atual.proxima_fase(sprite_jogador))
     itens_cenario_atual = cenario_atual.itens
-
+    jogador.troca_sprite_armas(sprite_jogador, inventario)
     if not teclado.key_pressed("I"):
         tecla_solta = True
     ################### Game Physics ##########################

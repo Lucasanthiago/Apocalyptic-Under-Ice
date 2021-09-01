@@ -16,13 +16,18 @@ class Personagem:
         # Configurações Animação
         self.numero_sprites = 1
         self.tempo_animacao = 100
-        self.personagem = Sprite("Imagens/personagem-parado.png", self.numero_sprites)
-
+        self.sprite_jogador = Sprite("Imagens/personagem-parado.png", 1)
+        self.sprite_jogador_E = Sprite("Imagens/personagem-parado-E.png", 1)
+        self.sprite_jogador_correndo_D = Sprite("Imagens/personagem-correndo-direita.png", 6)
+        self.sprite_jogador_correndo_D.set_sequence_time(0, 6, 120, True)
+        self.sprite_jogador_correndo_E = Sprite("Imagens/personagem-correndo-esquerda.png", 6)
+        self.sprite_jogador_correndo_E.set_sequence_time(0, 6, 120, True)
         # Dados do Personagem
         self.vida = 100
         self.vida_maxima = 100
         self.velocidade = 500
-        self.arma_equipada = 1
+        self.slot_equipado = 1
+        self.ultimo_slot = 1
 
     def fisica(self, janela, sprite_jogador):
         # Atribuições
@@ -72,6 +77,24 @@ class Personagem:
         elif personagem.y > janela.height - personagem.height:
             personagem.y = janela.height - personagem.height
 
+    def troca_sprite_armas(self, sprite_jogador, inventario):
+        if inventario.alterou_inventario or self.slot_equipado != self.ultimo_slot:
+            x = sprite_jogador.x
+            y = sprite_jogador.y
+            if inventario.inventario[self.slot_equipado - 1] != 0:
+                nome = "-" + inventario.inventario[self.slot_equipado - 1].__class__.__name__ + ".png"
+            else:
+                nome = ".png"
+            self.sprite_jogador = Sprite("Imagens/personagem-parado" + nome, 1)
+            self.sprite_jogador_E = Sprite("Imagens/personagem-parado-E" + nome, 1)
+            self.sprite_jogador_correndo_D = Sprite("Imagens/personagem-correndo-direita" + nome, 6)
+            self.sprite_jogador_correndo_D.set_sequence_time(0, 6, 120, True)
+            self.sprite_jogador_correndo_E = Sprite("Imagens/personagem-correndo-esquerda" + nome, 6)
+            self.sprite_jogador_correndo_E.set_sequence_time(0, 6, 120, True)
+            self.sprite_jogador.x = x
+            self.sprite_jogador.y = y
+            self.ultimo_slot = self.slot_equipado
+            inventario.alterou_inventario = False
 
 class Inimigos(Personagem):
 

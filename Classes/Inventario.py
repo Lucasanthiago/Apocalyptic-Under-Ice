@@ -19,6 +19,7 @@ class Inventario:
         # Posição dos Itens
         self.posicoes_item = []
         self.preenche_posicoes_inventario()
+        self.alterou_inventario = False
 
     def preenche_posicoes_inventario(self):
         self.posicoes_item = [[self.pos_x_0, self.pos_y_0],
@@ -48,9 +49,11 @@ class Inventario:
         # Se existir, adiciona o item nele
         if ind != "Sem Espaço":
             self.inventario[ind] = item
+        self.alterou_inventario = True
 
     def retira_do_inventario(self, indice):
         self.inventario[indice] = 0
+        self.alterou_inventario = True
 
     def mostra_inventario(self):
         # Atribuições
