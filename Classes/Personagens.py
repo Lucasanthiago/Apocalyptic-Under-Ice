@@ -171,9 +171,14 @@ class Inimigos(Personagem):
             # Cálculo do Incremento
             x = jogador.x - inimigo.x
             y = jogador.y - inimigo.y
-            angulo_jogador_inimigo = math.fabs(math.atan(x / y))
-            incremento_x = math.sin(angulo_jogador_inimigo)
-            incremento_y = math.cos(angulo_jogador_inimigo)
+            # Elimina o erro de quando o x for 0
+            try:
+                angulo_jogador_inimigo = math.fabs(math.atan(y / x))
+            except ZeroDivisionError:
+                angulo_jogador_inimigo = 0
+            # Calcula os incrementos
+            incremento_y = math.sin(angulo_jogador_inimigo)
+            incremento_x = math.cos(angulo_jogador_inimigo)
 
             # Calculando a direção em que deve-se ir
             multi_x = 1

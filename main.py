@@ -24,8 +24,6 @@ ultimo_mov_D = True
 sprite_jogador = jogador.sprite_jogador
 sprite_jogador.y = 400
 
-inimigo = Inimigos()
-
 # Barra de Vida
 barra_de_vida = BarraVida(jogador, janela)
 
