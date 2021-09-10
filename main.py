@@ -1,7 +1,7 @@
 from Classes.Personagens import *
 from Classes.VariaveisGerais import InformacoesBase
 from Classes.Cenarios import *
-from PPlay.sprite import *
+from Classes.Tiro import *
 from Classes.UserInterface import *
 from Classes.Inventario import *
 
@@ -24,6 +24,9 @@ ultimo_mov_D = True
 sprite_jogador = jogador.sprite_jogador
 sprite_jogador.y = 400
 
+# Arma
+matriz_tiros = []
+
 # Barra de Vida
 barra_de_vida = BarraVida(jogador, janela)
 
@@ -37,18 +40,23 @@ while True:
     sprite_jogador_E = jogador.sprite_jogador_E
 
     ################### Updates ###############################
-
     cenario_atual = eval(cenario_atual.proxima_fase(sprite_jogador))
     itens_cenario_atual = cenario_atual.itens
     jogador.troca_sprite_armas(sprite_jogador, inventario)
     if not teclado.key_pressed("I"):
         tecla_solta = True
+
     ################### Game Physics ##########################
 
     # Fisica jogador
     jogador.fisica(janela, sprite_jogador)
     # Colisões cenário
     cenario_atual.colisoes_cenario(sprite_jogador)
+
+    arma_equipada = inventario.inventario[jogador.slot_equipado - 1]
+
+    if arma_equipada.__class__.__name__ == "Pistola":
+        arma_equipada.atira(janela, sprite_jogador, matriz_tiros)
 
     ################### Desenho ###############################
 
@@ -95,6 +103,14 @@ while True:
             sprite_jogador_E.x = sprite_jogador.x
             sprite_jogador_E.y = sprite_jogador.y
             sprite_jogador_E.draw()
+    print(matriz_tiros)
+    for i in range(len(matriz_tiros)):
+        tiro = matriz_tiros[i]
+        tiro.movimenta_tiro()
+        tiro.imagem.draw()
+        if tiro.imagem.x > janela.width or tiro.imagem.x < 0 or tiro.imagem.y > janela.height or tiro.imagem.y < 0:
+            matriz_tiros.pop(i)
+            break
 
     barra_de_vida.update()
     if teclado.key_pressed("I") and tecla_solta:

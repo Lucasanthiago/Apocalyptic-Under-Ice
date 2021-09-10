@@ -1,27 +1,17 @@
 from PPlay.gameimage import *
-from PPlay.sprite import *
 
 
 class Tiro:
-    def __init__(self):
-        self.tiros = []
+    def __init__(self, incremento, dano, jogador_x, jogador_y):
+        self.imagem = GameImage("Imagens/tiro.png")
+        self.imagem.x = jogador_x
+        self.imagem.y = jogador_y
 
-    def add_shot(self, jogador):
-        tiro = Sprite("Imagens/Bola.png")
-        print(tiro.width)
-        tiro.set_position(jogador.x + jogador.width / 2, jogador.y - tiro.height)
-        self.tiros.append(tiro)
+        self.incremento_x = incremento[0]
+        self.incremento_y = incremento[1]
+        self.dano = dano
+        self.velocidade = 3000
 
-    def draw_shots(self):
-        for i in range(len(self.tiros)):
-            self.tiros[i].draw()
-
-    def update(self, janela):
-        variacao = 0
-        for shot in self.tiros:
-            shot.x = shot.x + 300 * janela.delta_time()
-            if shot.x <= 0 - shot.width:
-                self.tiros.remove(shot)
-                variacao += 1
-
-        self.draw_shots()
+    def movimenta_tiro(self):
+        self.imagem.x += self.incremento_x * self.velocidade
+        self.imagem.y += self.incremento_y * self.velocidade

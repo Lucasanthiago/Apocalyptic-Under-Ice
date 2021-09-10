@@ -1,7 +1,9 @@
 from PPlay.sprite import *
 from PPlay.gameimage import *
-from PPlay.keyboard import *
+from PPlay.mouse import *
+from Classes.Tiro import *
 import math
+
 
 class Pistola:
     def __init__(self):
@@ -11,7 +13,8 @@ class Pistola:
         self.imagem.y = 593
         self.dano = 15
         self.raio_proximo = 70
-        self.tiros = []
+        self.tempo_recarga = 0.6
+        self.cronometro = 0
 
     def desenha(self):
         self.imagem.draw()
@@ -26,28 +29,46 @@ class Pistola:
         arma_y = self.imagem.y + self.imagem.height / 2
 
         equacao_circulo = (jogador_x - arma_x) ** 2 + (jogador_y - arma_y) ** 2
-        print(equacao_circulo)
         if equacao_circulo <= self.raio_proximo ** 2:
             return True
         return False
 
-    def atirar(self, jogador, janela):
-        if Keyboard().key_pressed("SPACE"):
-            tiro = Sprite("Imagens/Bola.png")
-            print(tiro.width)
-            tiro.set_position(jogador.x + jogador.width / 2, jogador.y - tiro.height)
-            self.tiros.append(tiro)
+    def atira(self, janela, sprite_jogador, matriz_tiros):
+        mouse = Mouse()
+        self.cronometro += janela.delta_time()
 
-        variacao = 0
-        for shot in self.tiros:
-            shot.x = shot.x + 300 * janela.delta_time()
-            if shot.x <= 0 - shot.width:
-                self.tiros.remove(shot)
-                variacao += 1
+        if self.cronometro >= self.tempo_recarga and mouse.is_button_pressed(1):
+            coord_mouse = mouse.get_position()
+            coord_arma = (sprite_jogador.x + 10, sprite_jogador.y + sprite_jogador.height / 2 - 50)
+            # Distancias
+            x = math.fabs(coord_arma[0] - coord_mouse[0])
+            y = math.fabs(coord_arma[1] - coord_mouse[1])
+            print(x, y)
+            # Elimina o erro de quando o x for 0
+            try:
+                angulo_jogador_inimigo = math.atan(y / x)
+            except ZeroDivisionError:
+                angulo_jogador_inimigo = 0
+            # Calcula os incrementos
+            incremento_y = math.sin(angulo_jogador_inimigo)
+            incremento_x = math.cos(angulo_jogador_inimigo)
+            #print((incremento_x, incremento_y))
+            # Calculando a direção em que deve-se ir
+            multi_x = 1
+            multi_y = 1
 
-    def desenha_tiro(self):
-        for i in range(len(self.tiros)):
-            self.tiros[i].draw()
+            if coord_mouse[0] < coord_arma[0]:
+                multi_x = -1
+            if coord_mouse[1] <= coord_arma[1]:
+                multi_y = -1
+
+            # Incrementando
+            incremento_x = incremento_x * janela.delta_time() * multi_x
+            incremento_y = incremento_y * janela.delta_time() * multi_y
+            tiro = Tiro((incremento_x, incremento_y), self.dano, coord_arma[0], coord_arma[1])
+            matriz_tiros.append(tiro)
+
+            self.cronometro = 0
 
 
 class Faca:
