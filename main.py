@@ -16,6 +16,7 @@ tecla_solta = True
 # Cenarios
 cenario_0 = Cenario0()
 cenario_1 = Cenario1()
+cenario_2 = Cenario2()
 cenario_atual = cenario_0
 
 # Jogador
