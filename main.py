@@ -135,6 +135,7 @@ while True:
         cenario_atual.adiciona_lista_de_colisoes_anteriores(jogador)
         if cenario_atual == cenario_1 and inventario.verifica_item("FlorMedicinal") is not False:
             cenario_atual.cria_chefao()
+            cenario_atual.chefao_criado = True
         InformacoesBase.trocando_cenario = False
         cronometro_troca_cenario = 0
 

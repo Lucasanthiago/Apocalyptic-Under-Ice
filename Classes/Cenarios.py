@@ -34,6 +34,7 @@ class Cenario0:
         self.area_chefao = []
         self.ordas_inimigos = 0
         self.numero_inimigos = 0
+        self.chefao_criado = False
         self.cria_inimigos()
 
         # Configuração dos itens
@@ -97,11 +98,12 @@ class Cenario0:
         personagem.colisao_antiga = [[] for _ in range(len(self.area_colisoes))]
 
     def cria_chefao(self):
-        inimigo = Chefao()
-        self.adiciona_lista_de_colisoes_anteriores(inimigo)
-        inimigo.sprite.x = random.randint(self.area_chefao[0], self.area_chefao[2] - inimigo.sprite.width)
-        inimigo.sprite.y = random.randint(self.area_chefao[1], self.area_chefao[3] - inimigo.sprite.height)
-        self.inimigos.append(inimigo)
+        if not self.chefao_criado:
+            inimigo = Chefao()
+            self.adiciona_lista_de_colisoes_anteriores(inimigo)
+            inimigo.sprite.x = random.randint(self.area_chefao[0], self.area_chefao[2] - inimigo.sprite.width)
+            inimigo.sprite.y = random.randint(self.area_chefao[1], self.area_chefao[3] - inimigo.sprite.height)
+            self.inimigos.append(inimigo)
 
     def cria_inimigos(self):
         for i in range(self.numero_inimigos):
