@@ -2,10 +2,10 @@ from PPlay.gameimage import *
 
 
 class Tiro:
-    def __init__(self, incremento, dano, jogador_x, jogador_y):
+    def __init__(self, incremento, dano, sprite_jogador):
         self.imagem = GameImage("Imagens/tiro.png")
-        self.imagem.x = jogador_x
-        self.imagem.y = jogador_y
+        self.imagem.x = sprite_jogador.x + sprite_jogador.width / 2.8
+        self.imagem.y = sprite_jogador.y + (sprite_jogador.height / 4)
 
         self.incremento_x = incremento[0]
         self.incremento_y = incremento[1]

@@ -1,5 +1,4 @@
 
-
 """ Verifica se houve colisão com um retângulo, e se não houve, ele mostra os lados em que o player esta
     dentro da area de colisao """
 
@@ -38,4 +37,3 @@ class Colisoes():
 
     def __init__(self):
         pass
-
