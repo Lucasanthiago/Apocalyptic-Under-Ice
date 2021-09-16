@@ -367,6 +367,7 @@ class Aliados:
             falas = getattr(Falas, self.nome_aliado)
         else:
             falas = getattr(Falas, self.nome_aliado + "_depois_item_especial")
+            InformacoesBase.terminou_jogo = True
         fala = self.fala
 
         # Loop de Falas

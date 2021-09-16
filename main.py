@@ -20,6 +20,7 @@ tecla_solta = True
 # Cenarios
 prologo = TelaPrologo("Imagens/prologo1.png")
 prologo_2 = TelaPrologo("Imagens/prologo2.png")
+manual = TelaPrologo("Imagens/manual.png")
 cenario_0 = Cenario0()
 cenario_1 = Cenario1()
 cenario_2 = Cenario2()
@@ -28,6 +29,7 @@ cenario_atual = cenario_0
 # Mostra o prologo
 prologo.tela(janela)
 prologo_2.tela(janela)
+manual.tela(janela)
 
 # Jogador
 jogador = Personagem()
@@ -80,7 +82,11 @@ while True:
     ################### Updates ###############################
 
     if InformacoesBase.morreu:
-        cenario_atual = TelaMorte().tela(janela)
+        cenario_atual = TelaMorte("Imagens/Tela_de_morte.png").tela(janela)
+
+    if InformacoesBase.terminou_jogo:
+        cenario_atual = TelaMorte("Imagens/epilogo.png").tela(janela)
+
     if InformacoesBase.trocando_cenario or musica_atual is None:
         musica_atual = cenario_atual.som_cenario
         pygame.mixer.music.load(musica_atual)

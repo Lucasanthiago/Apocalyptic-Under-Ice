@@ -46,7 +46,7 @@ class Cenario0:
         item_vida2.imagem.x = 658
         item_vida2.imagem.y = 839
 
-        self.itens = [arma, item_vida, item_vida2]
+        self.itens = [arma, item_vida, item_vida2, fm]
 
         # Configurações dos Aliados
         esposa_e_filha = Aliados("Imagens/esposa_e_filha.png", "Esposa e Filha")
@@ -198,9 +198,9 @@ class Cenario2(Cenario0):
 
 
 class TelaMorte:
-    def __init__(self):
+    def __init__(self, imagem):
         # definir o fundo
-        self.fundo = GameImage("Imagens/Tela_de_morte.png")
+        self.fundo = GameImage(imagem)
 
     def tela(self, janela):
         opcao_selecionada = False
@@ -233,14 +233,16 @@ class TelaMorte:
 class TelaPrologo(TelaMorte):
     def __init__(self, dir_imagem):
         # definir o fundo
-        super().__init__()
+        super().__init__(dir_imagem)
         self.fundo = GameImage(dir_imagem)
 
     def tela(self, janela):
         sair = False
+        frase_proxima_mensagem = GameImage("Imagens/proxima_mensagem.png")
         while Keyboard().key_pressed("SPACE"):
             janela.update()
         while not (Keyboard().key_pressed("SPACE") and not sair):
             janela.set_background_color("BLACK")
             self.fundo.draw()
+            frase_proxima_mensagem.draw()
             janela.update()

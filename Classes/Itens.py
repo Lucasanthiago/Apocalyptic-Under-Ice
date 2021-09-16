@@ -13,7 +13,7 @@ class Pistola:
         self.imagem.y = 593
         self.dano = 15
         self.raio_proximo = 100
-        self.tempo_recarga = 0.05
+        self.tempo_recarga = 0.2
         self.cronometro = 0
         self.som_tiro = pygame.mixer.Sound("Sons/tiro_arma.ogg")
         self.som_tiro.set_volume(0.3)
