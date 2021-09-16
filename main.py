@@ -1,26 +1,29 @@
 import pygame.mixer
-
 from Classes.Personagens import *
 from Classes.VariaveisGerais import InformacoesBase
 from Classes.Cenarios import *
 from Classes.Tiro import *
 from Classes.UserInterface import *
 from Classes.Inventario import *
-
-# Inicialização
 from PPlay.collision import Collision
 
+# Inicialização
 janela = InformacoesBase.janela
 teclado = Keyboard()
+escolhe_resolucao = TelaResolucao()
+escolhe_resolucao.tela(janela)
+janela = InformacoesBase.janela
+InformacoesBase.fator_redimensionamento = InformacoesBase.resolucao_base[0] / janela.width
+F_R = InformacoesBase.fator_redimensionamento
 
 # Inventário
 inventario = Inventario(janela)
 tecla_solta = True
 
 # Cenarios
-prologo = TelaPrologo("Imagens/prologo1.png")
-prologo_2 = TelaPrologo("Imagens/prologo2.png")
-manual = TelaPrologo("Imagens/manual.png")
+prologo = TelaPrologo("Imagens/" + InformacoesBase.resolucao + "prologo1.png")
+prologo_2 = TelaPrologo("Imagens/" + InformacoesBase.resolucao + "prologo2.png")
+manual = TelaPrologo("Imagens/" + InformacoesBase.resolucao + "manual.png")
 cenario_0 = Cenario0()
 cenario_1 = Cenario1()
 cenario_2 = Cenario2()
@@ -35,10 +38,9 @@ manual.tela(janela)
 jogador = Personagem()
 ultimo_mov_D = True
 sprite_jogador = jogador.sprite
-sprite_jogador.y = 400
+sprite_jogador.y = (400 / F_R)
 pode_recuperar_vida = True
 quantia_vida = 0
-
 
 # Sons
 musica_atual = None
@@ -82,10 +84,11 @@ while True:
     ################### Updates ###############################
 
     if InformacoesBase.morreu:
-        cenario_atual = TelaMorte("Imagens/Tela_de_morte.png").tela(janela)
+        cenario_atual = TelaMorte("Imagens/" + InformacoesBase.resolucao + "Tela_de_morte.png").tela(janela)
 
     if InformacoesBase.terminou_jogo:
-        cenario_atual = TelaMorte("Imagens/epilogo.png").tela(janela)
+        cenario_atual = TelaMorte("Imagens/" + InformacoesBase.resolucao + "epilogo.png").tela(janela)
+
 
     if InformacoesBase.trocando_cenario or musica_atual is None:
         musica_atual = cenario_atual.som_cenario
@@ -193,7 +196,7 @@ while True:
                 itens_cenario_atual.pop(i)
             else:
                 janela.draw_text("Inventário Cheio",
-                                 janela.width / 2, janela.height * 2 / 3, 40, (0, 255, 105), "Arial", True, True)
+                                 janela.width / 2, janela.height * 2 / 3, int(40 / F_R), (0, 255, 105), "Arial", True, True)
             break
 
     # Escolhe o sprite do jogador
@@ -208,7 +211,6 @@ while True:
                 sprite_inimigo[0].update()
         else:
             inimigos_na_frente.append(i)
-    print(sprite_correndo[0].x, sprite_correndo[0].y)
 
     # Desenha aliados e lida com suas falas
     for aliado in aliados:
@@ -217,7 +219,6 @@ while True:
             aliado.inteligencia_artificial(janela, sprite_correndo[0], jogador)
         else:
             aliados_na_frente.append(aliado)
-    print(aliados_na_frente)
     # Desenha os tiros
     for i in range(len(matriz_tiros)):
         matriz_tiros[i].imagem.draw()
@@ -244,7 +245,7 @@ while True:
     # Desenha a quantia de vidas
     if quantia_vida > 0:
         janela.draw_text("Itens de vida: " + str(quantia_vida),
-                         janela.width - 350, 10, 40, (0, 255, 105), "Arial", True, True)
+                         janela.width - (350 / F_R), (10 / F_R), int(40 / F_R), (0, 255, 105), "Arial", True, True)
 
     # Desenha o inventário
     if teclado.key_pressed("I") and tecla_solta:

@@ -1,5 +1,9 @@
+import os
 import random
-
+from PIL import Image
+from os import listdir, path
+from os.path import isfile, join
+from pathlib import Path
 import pygame.mixer
 
 from PPlay import sprite
@@ -13,21 +17,22 @@ from math import sqrt
 
 class Cenario0:
     def __init__(self):
-        self.fundo = GameImage("Imagens/Cenario-0.png")
+        self.fundo = GameImage("Imagens/" + InformacoesBase.resolucao + "Cenario-0.png")
         self.som_cenario = "Sons/Musica_0.mp3"
         self.volume_som_cenario = 0.3
         self.som_passos = "Sons/piso_marmore.wav"
         self.volume_passos = 0.3
+        F_R = InformacoesBase.fator_redimensionamento
+        self.F_R = F_R
         # Configuração das colisões
-        self.area_colisoes = [[0, 780, 339, 1080], [463, 862, 829, 1080], [1141, 362, 1466, 567],
-                              [829, 781, 1182, 1080], [1182, 919, 1288, 1004], [1203, 571, 1403, 635],
-                              [1559, 579, 1678, 661], [1563, 710, 1920, 803], [1687, 300, 1920, 597],
-                              [654, 200, 761, 490]]
-        self.limite = 213.45
+        self.area_colisoes = [[0 / F_R, 780 / F_R, 339 / F_R, 1080 / F_R], [463 / F_R, 862 / F_R, 829 / F_R, 1080 / F_R]
+            ,[1141 / F_R, 362 / F_R, 1466 / F_R, 567 / F_R], [829 / F_R, 781 / F_R, 1182 / F_R, 1080 / F_R],
+             [1182 / F_R, 919 / F_R, 1288 / F_R, 1004 / F_R], [1203 / F_R, 571 / F_R, 1403 / F_R, 635 / F_R],
+             [1559 / F_R, 579 / F_R, 1678 / F_R, 661 / F_R], [1563 / F_R, 710 / F_R, 1920 / F_R, 803 / F_R],
+             [1687 / F_R, 300 / F_R, 1920 / F_R, 597 / F_R], [654 / F_R, 200 / F_R, 761 / F_R, 490 / F_R]]
 
-        fm = FlorMedicinal()
-        fm.imagem.x = 0
-        fm.imagem.y = 500
+        self.limite = 213.45 / F_R
+
         # Configuração dos inimigos
         self.inimigos = []
         self.area_inimigos = []
@@ -41,17 +46,17 @@ class Cenario0:
         arma = Pistola()
         item_vida = ItemVida()
         item_vida2 = ItemVida()
-        item_vida.imagem.x = 395
-        item_vida.imagem.y = 837
-        item_vida2.imagem.x = 658
-        item_vida2.imagem.y = 839
+        item_vida.imagem.x = 395 / self.F_R
+        item_vida.imagem.y = 837 / self.F_R
+        item_vida2.imagem.x = 658 / self.F_R
+        item_vida2.imagem.y = 839 / self.F_R
 
-        self.itens = [arma, item_vida, item_vida2, fm]
+        self.itens = [arma, item_vida, item_vida2]
 
         # Configurações dos Aliados
-        esposa_e_filha = Aliados("Imagens/esposa_e_filha.png", "Esposa e Filha")
-        esposa_e_filha.sprite.x = 651
-        esposa_e_filha.sprite.y = 260
+        esposa_e_filha = Aliados("Imagens/" + InformacoesBase.resolucao + "esposa_e_filha.png", "Esposa e Filha")
+        esposa_e_filha.sprite.x = 651 / F_R
+        esposa_e_filha.sprite.y = 260 / F_R
         self.aliados = [esposa_e_filha]
 
         # Auxilio para resetar as colisões
@@ -85,10 +90,10 @@ class Cenario0:
 
     def proxima_fase(self, jogador, inimigos):
         sprite_jogador = jogador.sprite
-        if sprite_jogador.x + sprite_jogador.width > 1668 \
-                and 640 < sprite_jogador.y + sprite_jogador.height < 720:
-            sprite_jogador.x = 230
-            sprite_jogador.y = 647 - sprite_jogador.height
+        if sprite_jogador.x + sprite_jogador.width > 1668 / self.F_R \
+                and 640 / self.F_R < sprite_jogador.y + sprite_jogador.height < 720 / self.F_R:
+            sprite_jogador.x = 230 / self.F_R
+            sprite_jogador.y = (647 / self.F_R) - sprite_jogador.height
             self.inicializando = True
             InformacoesBase.trocando_cenario = True
             return "cenario_1"
@@ -117,21 +122,24 @@ class Cenario0:
 class Cenario1(Cenario0):
     def __init__(self):
         super().__init__()
-        self.fundo = GameImage("Imagens/Cenario_2.png")
+        self.fundo = GameImage("Imagens/" + InformacoesBase.resolucao + "Cenario_2.png")
         self.som_cenario = "Sons/Musica_1.ogg"
         self.volume_som_cenario = 0.1
         self.som_passos = "Sons/piso_neve.ogg"
         self.volume_passos = 0.2
+        F_R = self.F_R
         # Configuração de colisões
-        self.area_colisoes = [[470, 859, 909, 1080], [360, 43, 605, 416], [907, 3, 1486, 458],
-                              [1109, 890, 1278, 1069], [1542, 155, 1652, 423], [1603, 854, 1912, 1074],
-                              [4, 5, 1910, 376], [0, 563, 138, 742]]
-        self.limite = 0
+        self.area_colisoes = [[470 / F_R, 859 / F_R, 909 / F_R, 1080 / F_R],
+                        [360 / F_R, 43 / F_R, 605 / F_R, 416 / F_R], [907 / F_R, 3 / F_R, 1486 / F_R, 458 / F_R],
+                        [1109 / F_R, 890 / F_R, 1278 / F_R, 1069 / F_R], [1542 / F_R, 155 / F_R, 1652 / F_R, 423 / F_R],
+                        [1603 / F_R, 854 / F_R, 1912 / F_R, 1074 / F_R], [4 / F_R, 5 / F_R, 1910 / F_R, 376 / F_R],
+                        [0 / F_R, 563 / F_R, 138 / F_R, 742 / F_R]]
+        self.limite = 0 / F_R
 
         # Configurações dos inimigos
         self.inimigos = []
-        self.area_inimigos = [710, 465, 1847, 854]
-        self.area_chefao = [236, 472, 950, 857]
+        self.area_inimigos = [620 // F_R, 483 // F_R, 1527 // F_R, 850 // F_R]
+        self.area_chefao = [236 // F_R, 472 // F_R, 950 // F_R, 857 // F_R]
         self.ordas_inimigos = 3
         self.numero_inimigos = 3
         # Configurações dos Aliados
@@ -142,17 +150,18 @@ class Cenario1(Cenario0):
 
     def proxima_fase(self, jogador, lista_inimigos):
         sprite_jogador = jogador.sprite
-        if sprite_jogador.x + sprite_jogador.width > 1891 \
-                and 547 < sprite_jogador.y + sprite_jogador.height < 688 and self.ordas_inimigos == 0 \
-                and len(lista_inimigos) == 0:
+        if sprite_jogador.x + sprite_jogador.width > (1891 / self.F_R) \
+                and (547 / self.F_R) < sprite_jogador.y + sprite_jogador.height < (688 / self.F_R) \
+                and self.ordas_inimigos == 0  and len(lista_inimigos) == 0:
             sprite_jogador.x = 146
             sprite_jogador.y = 575 - sprite_jogador.height
             InformacoesBase.trocando_cenario = True
             return "cenario_2"
-        elif sprite_jogador.x < 168 and 558 < sprite_jogador.y + sprite_jogador.height < 739 \
-                and (jogador.inventario.verifica_item("FlorMedicinal") is not False) and len(lista_inimigos) == 0:
-            sprite_jogador.x = 1520
-            sprite_jogador.y = 705 - sprite_jogador.height
+        elif sprite_jogador.x < (168 / self.F_R) and (558 / self.F_R) < sprite_jogador.y + sprite_jogador.height < \
+                (739 / self.F_R) and (jogador.inventario.verifica_item("FlorMedicinal") is not False) \
+                and len(lista_inimigos) == 0:
+            sprite_jogador.x = 1520 / self.F_R
+            sprite_jogador.y = (705 / self.F_R) - sprite_jogador.height
             InformacoesBase.trocando_cenario = True
             return "cenario_0"
         return "cenario_1"
@@ -161,20 +170,22 @@ class Cenario1(Cenario0):
 class Cenario2(Cenario0):
     def __init__(self):
         super().__init__()
-        self.fundo = GameImage("Imagens/Cenario_3.png")
+        self.fundo = GameImage("Imagens/" + InformacoesBase.resolucao + "Cenario_3.png")
         self.som_cenario = "Sons/Musica_1.ogg"
         self.volume_som_cenario = 0.1
         self.som_passos = "Sons/piso_neve.ogg"
         self.volume_passos = 0.2
+        F_R = self.F_R
         # Configurações de Colisões
-        self.area_colisoes = [[459, 848, 819, 1076], [1001, 806, 1365, 1074], [251, 278, 383, 368],
-                              [503, 281, 632, 371], [858, 143, 1113, 414], [1485, 887, 1916, 1074],
-                              [5, 3, 1913, 330]]
-        self.limite = 0
+        self.area_colisoes = [[459 / F_R, 848 / F_R, 819 / F_R, 1076 / F_R],
+                        [1001 / F_R, 806 / F_R, 1365 / F_R, 1074 / F_R], [251 / F_R, 278 / F_R, 383 / F_R, 368 / F_R],
+                        [503 / F_R, 281 / F_R, 632 / F_R, 371 / F_R], [858 / F_R, 143 / F_R, 1113 / F_R, 414 / F_R],
+                        [1485, 887, 1916, 1074], [5 / F_R, 3 / F_R, 1913 / F_R, 330 / F_R]]
+        self.limite = 0 / F_R
 
         # Configuração dos inimigos
         self.inimigos = []
-        self.area_inimigos = [845, 421, 1919, 803]
+        self.area_inimigos = [845 // F_R, 421 // F_R, 1919 // F_R, 803 // F_R]
         self.ordas_inimigos = 3
         self.numero_inimigos = 4
 
@@ -187,11 +198,12 @@ class Cenario2(Cenario0):
 
     def proxima_fase(self, jogador, lista_inimigos):
         sprite_jogador = jogador.sprite
-        if sprite_jogador.x < 30 and 488 < sprite_jogador.y + sprite_jogador.height < 658:
+        if sprite_jogador.x < (30 / self.F_R) and (488 / self.F_R) < sprite_jogador.y + sprite_jogador.height < \
+                (658 / self.F_R):
             possui_flor = jogador.inventario.verifica_item("FlorMedicinal")
             if (possui_flor and len(lista_inimigos) == 0 and self.ordas_inimigos == 0) or not possui_flor:
-                sprite_jogador.x = 1760
-                sprite_jogador.y = 644 - sprite_jogador.height
+                sprite_jogador.x = 1760 / self.F_R
+                sprite_jogador.y = (644 / self.F_R) - sprite_jogador.height
                 InformacoesBase.trocando_cenario = True
                 return "cenario_1"
         return "cenario_2"
@@ -201,6 +213,8 @@ class TelaMorte:
     def __init__(self, imagem):
         # definir o fundo
         self.fundo = GameImage(imagem)
+        self.F_R = InformacoesBase.fator_redimensionamento
+        self.pasta_apagar = "Imagens\\ImagensRedimensionadas\\"
 
     def tela(self, janela):
         opcao_selecionada = False
@@ -215,30 +229,33 @@ class TelaMorte:
             cor1 = (0, 0, 0)
             cor2 = (0, 0, 0)
             pos_mouse = mouse.get_position()
-            if 480 < pos_mouse[0] < 960 and 665 < pos_mouse[1] < 814:
+            if (480 / self.F_R) < pos_mouse[0] < (960 / self.F_R) and (665 / self.F_R) < pos_mouse[1] < (814 / self.F_R):
                 cor1 = (125, 125, 125)
                 if botao_mouse and pode_selecionar:
                     pass
                     # Vai retornar para o menu principal
-            elif 960 < pos_mouse[0] < 1440 and 665 < pos_mouse[1] < 814:
+            elif (960 / self.F_R) < pos_mouse[0] < (1440 / self.F_R) and (665 / self.F_R) < pos_mouse[1] < \
+                    (814 / self.F_R):
                 cor2 = (125, 125, 125)
                 if botao_mouse and pode_selecionar:
+                    pasta_imagens = listdir(self.pasta_apagar)
+                    for imagens in pasta_imagens:
+                        os.remove(self.pasta_apagar + imagens)
                     janela.close()
-            pygame.draw.rect(tela, cor1, (480, 665, 480, 149))
-            pygame.draw.rect(tela, cor2, (960, 665, 480, 149))
+            pygame.draw.rect(tela, cor1, ((480 / self.F_R), (665 / self.F_R), 480 / self.F_R, 149 / self.F_R))
+            pygame.draw.rect(tela, cor2, ((960 / self.F_R), (665 / self.F_R), (480 / self.F_R), (149 / self.F_R)))
             self.fundo.draw()
             janela.update()
 
 
-class TelaPrologo(TelaMorte):
+class TelaPrologo:
     def __init__(self, dir_imagem):
         # definir o fundo
-        super().__init__(dir_imagem)
         self.fundo = GameImage(dir_imagem)
 
     def tela(self, janela):
         sair = False
-        frase_proxima_mensagem = GameImage("Imagens/proxima_mensagem.png")
+        frase_proxima_mensagem = GameImage("Imagens/" + InformacoesBase.resolucao + "proxima_mensagem.png")
         while Keyboard().key_pressed("SPACE"):
             janela.update()
         while not (Keyboard().key_pressed("SPACE") and not sair):
@@ -246,3 +263,85 @@ class TelaPrologo(TelaMorte):
             self.fundo.draw()
             frase_proxima_mensagem.draw()
             janela.update()
+
+
+class TelaResolucao:
+    def __init__(self, ):
+        self.fundo = GameImage("Imagens/" + InformacoesBase.resolucao + "Tela_de_resolucao.png")
+        self.F_R = InformacoesBase.fator_redimensionamento
+        self.diretorio_arquivos = "Imagens\\1080P\\"
+        self.diretorio_salvar = "Imagens\\ImagensRedimensionadas\\"
+
+    def tela(self, janela):
+        opcao_selecionada = False
+        tela = pygame.display.set_mode((janela.width, janela.height))
+        pode_selecionar = False
+        while not opcao_selecionada:
+            mouse = Mouse()
+            botao_mouse = mouse.is_button_pressed(1)
+            if not botao_mouse:
+                pode_selecionar = True
+            janela.set_background_color("BLACK")
+            cor1 = (0, 0, 0)
+            cor2 = (0, 0, 0)
+            cor3 = (0, 0, 0)
+            cor4 = (0, 0, 0)
+            pos_mouse = mouse.get_position()
+            if (480 / self.F_R) < pos_mouse[0] < (960 / self.F_R) and (515 / self.F_R) < pos_mouse[1] < \
+                    (665 / self.F_R):
+                cor1 = (125, 125, 125)
+                if botao_mouse and pode_selecionar:
+                    InformacoesBase.janela = Window(1280, 720)
+                    InformacoesBase.resolucao = "ImagensRedimensionadas/"
+                    self.cria_imagens_resolucao()
+                    opcao_selecionada = True
+                    # Vai retornar para o menu principal
+            elif (480 / self.F_R) < pos_mouse[0] < (960 / self.F_R) and (545 / self.F_R) < pos_mouse[1] < \
+                    (814 / self.F_R):
+                cor3 = (125, 125, 125)
+                if botao_mouse and pode_selecionar:
+                    InformacoesBase.janela = Window(1366, 768)
+                    InformacoesBase.resolucao = "ImagensRedimensionadas/"
+                    self.cria_imagens_resolucao()
+                    opcao_selecionada = True
+                    # Vai retornar para o menu principal
+            elif (960 / self.F_R) < pos_mouse[0] < (1440 / self.F_R) and (515 / self.F_R) < pos_mouse[1] < \
+                    (665 / self.F_R):
+                cor2 = (125, 125, 125)
+                if botao_mouse and pode_selecionar:
+                    InformacoesBase.janela = Window(1600, 900)
+                    InformacoesBase.resolucao = "ImagensRedimensionadas/"
+                    self.cria_imagens_resolucao()
+                    opcao_selecionada = True
+                    # Vai retornar para o menu principal
+            elif (960 / self.F_R) < pos_mouse[0] < (1440 / self.F_R) and (665 / self.F_R) < pos_mouse[1] < \
+                    (814 / self.F_R):
+                cor4 = (125, 125, 125)
+                if botao_mouse and pode_selecionar:
+                    InformacoesBase.janela = Window(1920, 1080)
+                    InformacoesBase.resolucao = "1080P/"
+                    opcao_selecionada = True
+            pygame.draw.rect(tela, cor1, ((480 / self.F_R), (515 / self.F_R), 480 / self.F_R, 149 / self.F_R))
+            pygame.draw.rect(tela, cor2, ((960 / self.F_R), (515 / self.F_R), (480 / self.F_R), (149 / self.F_R)))
+            pygame.draw.rect(tela, cor3, ((480 / self.F_R), (665 / self.F_R), 480 / self.F_R, 149 / self.F_R))
+            pygame.draw.rect(tela, cor4, ((960 / self.F_R), (665 / self.F_R), (480 / self.F_R), (149 / self.F_R)))
+            self.fundo.draw()
+            janela.update()
+        return "menu_principal"
+
+    def cria_imagens_resolucao(self):
+        resolucao = (InformacoesBase.janela.width, InformacoesBase.janela.height)
+        resolucao_base = InformacoesBase.resolucao_base
+        fator_redimensionamento = (resolucao_base[0] / resolucao[0], resolucao_base[1] / resolucao[1])
+
+        arquivos = [f for f in listdir(self.diretorio_arquivos) if isfile(join(self.diretorio_arquivos, f))]
+
+        for arquivo in arquivos:
+            if arquivo.__contains__(".png"):
+                imagem_padrao = Image.open(self.diretorio_arquivos + arquivo)
+
+                tamanho_imagem_padrao = imagem_padrao.size
+                imagem_redimensionada = imagem_padrao.resize(
+                    (int(tamanho_imagem_padrao[0] / fator_redimensionamento[0]),
+                     int(tamanho_imagem_padrao[1] / fator_redimensionamento[1])))
+                imagem_redimensionada.save(self.diretorio_salvar + arquivo)

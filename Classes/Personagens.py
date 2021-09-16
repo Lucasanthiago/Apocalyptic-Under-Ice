@@ -17,22 +17,22 @@ class Personagem:
     def __init__(self):
         # Dados Gerais
         self.teclado = Keyboard()
-
+        self.F_R = InformacoesBase.fator_redimensionamento
         # Configurações Animação
         self.numero_sprites = 1
         self.tempo_animacao = 120
-        self.sprite = Sprite("Imagens/personagem-parado.png", 1)
-        self.sprite_E = Sprite("Imagens/personagem-parado-E.png", 1)
-        self.sprite_correndo_D = Sprite("Imagens/personagem-correndo-direita.png", 6)
+        self.sprite = Sprite("Imagens/" + InformacoesBase.resolucao + "personagem-parado.png", 1)
+        self.sprite_E = Sprite("Imagens/" + InformacoesBase.resolucao + "personagem-parado-E.png", 1)
+        self.sprite_correndo_D = Sprite("Imagens/" + InformacoesBase.resolucao + "personagem-correndo-direita.png", 6)
         self.sprite_correndo_D.set_sequence_time(0, 6, self.tempo_animacao, True)
-        self.sprite_correndo_E = Sprite("Imagens/personagem-correndo-esquerda.png", 6)
+        self.sprite_correndo_E = Sprite("Imagens/" + InformacoesBase.resolucao + "personagem-correndo-esquerda.png", 6)
         self.sprite_correndo_E.set_sequence_time(0, 6, self.tempo_animacao, True)
         self.correcao_sprite_D = self.sprite.width
-        self.correcao_sprite_E = + 30
+        self.correcao_sprite_E = + (30 / self.F_R)
         # Dados do Personagem
         self.vida = 100
         self.vida_maxima = 100
-        self.velocidade = 500
+        self.velocidade = (500 / self.F_R)
         self.slot_equipado = 1
         self.ultimo_slot = 1
         self.inventario = None
@@ -50,13 +50,9 @@ class Personagem:
         # Atribuições
         personagem = sprite_jogador
         # Resetando Movimentos
-        InformacoesBase.movendo_esquerda = False
         self.movendo_esquerda = False
-        InformacoesBase.movendo_direita = False
         self.movendo_direita = False
-        InformacoesBase.movendo_baixo = False
         self.movendo_baixo = False
-        InformacoesBase.movendo_cima = False
         self.movendo_cima = False
         # Variaveis Principais
         teclado = Keyboard()
@@ -115,12 +111,12 @@ class Personagem:
             if nome == "-FlorMedicinal.png" or nome == "-ItemVida.png" or nome == "-PlacaHabilidade.png":
                 nome = ".png"
 
-            self.sprite = Sprite("Imagens/personagem-parado" + nome, 1)
-            self.sprite_E = Sprite("Imagens/personagem-parado-E" + nome, 1)
-            self.sprite_correndo_D = Sprite("Imagens/personagem-correndo-direita" + nome, 6)
-            self.sprite_correndo_D.set_sequence_time(0, 6, 120, True)
-            self.sprite_correndo_E = Sprite("Imagens/personagem-correndo-esquerda" + nome, 6)
-            self.sprite_correndo_E.set_sequence_time(0, 6, 120, True)
+            self.sprite = Sprite("Imagens/" + InformacoesBase.resolucao + "personagem-parado" + nome, 1)
+            self.sprite_E = Sprite("Imagens/" + InformacoesBase.resolucao + "personagem-parado-E" + nome, 1)
+            self.sprite_correndo_D = Sprite("Imagens/" + InformacoesBase.resolucao + "personagem-correndo-direita" + nome, 6)
+            self.sprite_correndo_D.set_sequence_time(0, 6, self.tempo_animacao, True)
+            self.sprite_correndo_E = Sprite("Imagens/" + InformacoesBase.resolucao + "personagem-correndo-esquerda" + nome, 6)
+            self.sprite_correndo_E.set_sequence_time(0, 6, self.tempo_animacao, True)
             self.sprite.x = x
             self.sprite.y = y
             self.ultimo_slot = self.slot_equipado
@@ -172,20 +168,20 @@ class Inimigos(Personagem):
 
         # Configurações Animação
         self.numero_sprites = 10
-        self.tempo_animacao = 20
-        self.sprite = Sprite("Imagens/inimigo-parado-D.png", 1)
-        self.sprite_E = Sprite("Imagens/inimigo-parado-E.png", 1)
-        self.sprite_correndo_D = Sprite("Imagens/Inimigo_Correndo_direita.png", 6)
-        self.sprite_correndo_D.set_sequence_time(0, 6, 120, True)
-        self.sprite_correndo_E = Sprite("Imagens/Inimigo_Correndo_esquerda.png", 6)
-        self.sprite_correndo_E.set_sequence_time(0, 6, 120, True)
-        self.correcao_sprite_D = 0
-        self.correcao_sprite_E = 0
+        self.tempo_animacao = 120
+        self.sprite = Sprite("Imagens/" + InformacoesBase.resolucao + "inimigo-parado-D.png", 1)
+        self.sprite_E = Sprite("Imagens/" + InformacoesBase.resolucao + "inimigo-parado-E.png", 1)
+        self.sprite_correndo_D = Sprite("Imagens/" + InformacoesBase.resolucao + "Inimigo_Correndo_direita.png", 6)
+        self.sprite_correndo_D.set_sequence_time(0, 6, self.tempo_animacao, True)
+        self.sprite_correndo_E = Sprite("Imagens/" + InformacoesBase.resolucao + "Inimigo_Correndo_esquerda.png", 6)
+        self.sprite_correndo_E.set_sequence_time(0, 6, self.tempo_animacao, True)
+        self.correcao_sprite_D = (0 / self.F_R)
+        self.correcao_sprite_E = (0 / self.F_R)
 
         # Dados do Personagem
         self.vida = 100
-        self.velocidade = 300
-        self.raio_de_agressividade = 1000
+        self.velocidade = (330 / self.F_R)
+        self.raio_de_agressividade = (1000 / self.F_R)
         self.raio_de_dano = self.raio_de_agressividade / 5
         self.tempo_dano = 1
         self.contador_dano = 0
@@ -285,20 +281,20 @@ class Chefao(Inimigos):
         super().__init__()
         # Configurações Animação
         self.numero_sprites = 10
-        self.tempo_animacao = 20
-        self.sprite = Sprite("Imagens/Chefao-parado-D.png", 1)
-        self.sprite_E = Sprite("Imagens/Chefao-parado-E.png", 1)
-        self.sprite_correndo_D = Sprite("Imagens/Chefao_Correndo_direita.png", 6)
-        self.sprite_correndo_D.set_sequence_time(0, 6, 120, True)
-        self.sprite_correndo_E = Sprite("Imagens/Chefao_Correndo_esquerda.png", 6)
-        self.sprite_correndo_E.set_sequence_time(0, 6, 120, True)
+        self.tempo_animacao = 120
+        self.sprite = Sprite("Imagens/" + InformacoesBase.resolucao + "Chefao-parado-D.png", 1)
+        self.sprite_E = Sprite("Imagens/" + InformacoesBase.resolucao + "Chefao-parado-E.png", 1)
+        self.sprite_correndo_D = Sprite("Imagens/" + InformacoesBase.resolucao + "Chefao_Correndo_direita.png", 6)
+        self.sprite_correndo_D.set_sequence_time(0, 6, self.tempo_animacao, True)
+        self.sprite_correndo_E = Sprite("Imagens/" + InformacoesBase.resolucao + "Chefao_Correndo_esquerda.png", 6)
+        self.sprite_correndo_E.set_sequence_time(0, 6, self.tempo_animacao, True)
         self.correcao_sprite_D = 0
         self.correcao_sprite_E = 0
         self.som = pygame.mixer.Sound("Sons/som_chefao.ogg")
         # Dados do Personagem
         self.vida = 700
-        self.velocidade = 250
-        self.raio_de_agressividade = 2000
+        self.velocidade = (250 / self.F_R)
+        self.raio_de_agressividade = (2000 / self.F_R)
         self.raio_de_dano = self.raio_de_agressividade / 10
         self.tempo_dano = 1
         self.contador_dano = 0
@@ -308,9 +304,9 @@ class Chefao(Inimigos):
 class Aliados:
     def __init__(self, dir_imagem, nome_aliado):
 
+        self.F_R = InformacoesBase.fator_redimensionamento
         # Configurações Animação
         self.numero_sprites = 1
-        self.tempo_animacao = 20
         self.sprite = Sprite(dir_imagem, self.numero_sprites)
 
         # Dados do Personagem
@@ -350,14 +346,16 @@ class Aliados:
                 self.conversa(janela, sprite_atual)
             else:
                 janela.draw_text(self.interacao + self.nome_aliado_exibir,
-                                 sprite_atual.x - 260, sprite_atual.y + 100, 20, (12, 34, 110), "Arial", True, True)
+                                 sprite_atual.x - (260 / self.F_R), sprite_atual.y + (100 / self.F_R),
+                                 int(20 / self.F_R), (12, 34, 110), "Arial", True, True)
 
     def conversa(self, janela, sprite_jogador):
         # Atribuições
+        Falas = FalasPersonagens()
         conversar = True
         mouse = Mouse()
         # Seleciona a lista de falas
-        frase_proxima_mensagem = GameImage("Imagens/proxima_mensagem.png")
+        frase_proxima_mensagem = GameImage("Imagens/" + InformacoesBase.resolucao + "proxima_mensagem.png")
         if self.jogador_com_item_especial:
             falas = getattr(Falas, self.nome_aliado + "_item_especial")
             if self.fala == len(falas) - 1:

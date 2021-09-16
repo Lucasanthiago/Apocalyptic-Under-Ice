@@ -7,13 +7,15 @@ import math
 
 class Pistola:
     def __init__(self):
-        self.imagem = GameImage("Imagens/pistola.png")
-        self.imagem_escalada = GameImage("Imagens/pistola_escalada.png")
-        self.imagem.x = 1215
-        self.imagem.y = 593
+        F_R = InformacoesBase.fator_redimensionamento
+        self.F_R = F_R
+        self.imagem = GameImage("Imagens/" + InformacoesBase.resolucao + "pistola.png")
+        self.imagem_escalada = GameImage("Imagens/" + InformacoesBase.resolucao + "pistola_escalada.png")
+        self.imagem.x = (1215 / F_R)
+        self.imagem.y = (593 / F_R)
         self.dano = 15
-        self.raio_proximo = 100
-        self.tempo_recarga = 0.2
+        self.raio_proximo = (100 / F_R)
+        self.tempo_recarga = 0.3
         self.cronometro = 0
         self.som_tiro = pygame.mixer.Sound("Sons/tiro_arma.ogg")
         self.som_tiro.set_volume(0.3)
@@ -35,7 +37,8 @@ class Pistola:
         equacao_circulo = (jogador_x - arma_x) ** 2 + (jogador_y - arma_y) ** 2
         if equacao_circulo <= self.raio_proximo ** 2:
             janela.draw_text(self.interacao + self.nome,
-                             sprite_jogador.x - 200, sprite_jogador.y + 100, 20, (100, 0, 255), "Arial", True, True)
+                             sprite_jogador.x - (200 / self.F_R), sprite_jogador.y + (100 / self.F_R),
+                             int(20 / self.F_R), (100, 0, 255), "Arial", True, True)
             return True
         return False
 
@@ -45,11 +48,11 @@ class Pistola:
 
         if self.cronometro >= self.tempo_recarga and mouse.is_button_pressed(1):
             coord_mouse = mouse.get_position()
-            coord_arma = (sprite_jogador.x + 10, sprite_jogador.y + sprite_jogador.height / 2 - 50)
+            coord_arma = (sprite_jogador.x + (10 / self.F_R), sprite_jogador.y + sprite_jogador.height / 2 -
+                          (50 / self.F_R))
             # Distancias
             x = math.fabs(coord_arma[0] - coord_mouse[0])
             y = math.fabs(coord_arma[1] - coord_mouse[1])
-            print(x, y)
             # Elimina o erro de quando o x for 0
             try:
                 angulo_jogador_inimigo = math.atan(y / x)
@@ -58,7 +61,6 @@ class Pistola:
             # Calcula os incrementos
             incremento_y = math.sin(angulo_jogador_inimigo)
             incremento_x = math.cos(angulo_jogador_inimigo)
-            # print((incremento_x, incremento_y))
             # Calculando a direção em que deve-se ir
             multi_x = 1
             multi_y = 1
@@ -81,11 +83,11 @@ class Pistola:
 class FlorMedicinal(Pistola):
     def __init__(self):
         super().__init__()
-        self.imagem_escalada = GameImage("Imagens/Flor_escalada.png")
-        self.imagem = GameImage("Imagens/Flor_escalada.png")
-        self.imagem.x = 1810
-        self.imagem.y = 597
-        self.raio_proximo = 70
+        self.imagem_escalada = GameImage("Imagens/" + InformacoesBase.resolucao + "Flor_escalada.png")
+        self.imagem = GameImage("Imagens/" + InformacoesBase.resolucao + "Flor_escalada.png")
+        self.imagem.x = (1810 / self.F_R)
+        self.imagem.y = (597 / self.F_R)
+        self.raio_proximo = (70 / self.F_R)
         self.som_tiro = None
         self.nome = "Flor Medicinal"
 
@@ -96,11 +98,11 @@ class FlorMedicinal(Pistola):
 class ItemVida(FlorMedicinal):
     def __init__(self):
         super().__init__()
-        self.imagem_escalada = GameImage("Imagens/item_vida.png")
-        self.imagem = GameImage("Imagens/item_vida.png")
-        self.imagem.x = 50
-        self.imagem.y = 700
-        self.raio_proximo = 70
+        self.imagem_escalada = GameImage("Imagens/" + InformacoesBase.resolucao + "item_vida.png")
+        self.imagem = GameImage("Imagens/" + InformacoesBase.resolucao + "item_vida.png")
+        self.imagem.x = (50 / self.F_R)
+        self.imagem.y = (700 / self.F_R)
+        self.raio_proximo = (70 / self.F_R)
         self.som_tiro = None
         self.quantia = 3
         self.nome = "Item de Vida"

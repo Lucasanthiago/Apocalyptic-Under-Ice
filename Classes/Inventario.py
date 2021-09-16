@@ -1,3 +1,4 @@
+from Classes.VariaveisGerais import *
 from PPlay.gameimage import *
 from PPlay.keyboard import *
 from PPlay.mouse import *
@@ -8,11 +9,12 @@ class Inventario:
         # Atribuições
         self.cronometro = 0
         self.inventario = [0] * 3
-        self.imagem_inventario = GameImage("Imagens/inv.png")
+        self.imagem_inventario = GameImage("Imagens/" + InformacoesBase.resolucao + "inv.png")
         self.janela = janela
-
+        F_R = InformacoesBase.fator_redimensionamento
+        self.F_R = F_R
         # Dados do Slot
-        self.largura_slot = 160
+        self.largura_slot = (160 / F_R)
         self.pos_x_0 = self.janela.width / 2 - self.largura_slot - self.largura_slot / 2
         self.pos_y_0 = self.janela.height / 2 - self.largura_slot - self.largura_slot / 2
 
@@ -63,9 +65,9 @@ class Inventario:
         movendo_item = False
         nova_pos = None
 
-        lixeira = GameImage("Imagens/Lixeira.png")
-        lixeira.x = 960 - lixeira.width / 2
-        lixeira.y = 930 - lixeira.height / 2
+        lixeira = GameImage("Imagens/" + InformacoesBase.resolucao + "Lixeira.png")
+        lixeira.x = (960 / self.F_R) - lixeira.width / 2
+        lixeira.y = (930 / self.F_R) - lixeira.height / 2
 
         # Loop do Inventario
         while (not teclado.key_pressed("ESC") and not teclado.key_pressed("I")) or (not tecla_solta):
@@ -101,7 +103,7 @@ class Inventario:
                         pos_mouse = mouse.get_position()
                         botao_pressionado = mouse.is_button_pressed(1)
                         item_atual = self.posicao_mouse(pos_mouse)
-                        print(item_atual)
+
                         # Faz o item "andar" com o mouse
                         if not pegoudif:
                             dif_x = self.inventario[item_selecionado].imagem_escalada.x - pos_mouse[0]
@@ -121,9 +123,7 @@ class Inventario:
                             break
 
                         # Troca o item selecionado de lugar, se não tiver nenhum item no novo local
-                        print(item_atual, item_selecionado)
                         if item_atual != item_selecionado and not botao_pressionado and item_atual is not None:
-                            print("ENTROU")
                             if self.inventario[item_atual] == 0:
                                 self.inventario[item_atual] = self.inventario[item_selecionado]
                                 self.retira_do_inventario(item_selecionado)
@@ -151,8 +151,8 @@ class Inventario:
 
     def move_item(self, indice, botao_pressionado, pos_mouse):
         while botao_pressionado:
-            self.inventario[indice].imagem.x = pos_mouse[0] - 15
-            self.inventario[indice].imagem.y = pos_mouse[1] - 15
+            self.inventario[indice].imagem.x = pos_mouse[0] - (15 / self.F_R)
+            self.inventario[indice].imagem.y = pos_mouse[1] - (15 / self.F_R)
 
             self.inventario[indice].desenha()
             self.janela.update()
@@ -162,8 +162,3 @@ class Inventario:
             if self.inventario[i].__class__.__name__ == nome_item:
                 return i
         return False
-
-
-class Bola:
-    def __init__(self):
-        self.imagem_bola = GameImage("Imagens/Bola.png")

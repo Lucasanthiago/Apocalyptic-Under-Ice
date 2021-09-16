@@ -1,6 +1,6 @@
-
 """ Verifica se houve colisão com um retângulo, e se não houve, ele mostra os lados em que o player esta
     dentro da area de colisao """
+
 
 def colisao_retangulo(sprite_jogador, retangulo, atras):
     if atras:
@@ -31,9 +31,3 @@ def colisao_retangulo(sprite_jogador, retangulo, atras):
         colisoes_verdadeiras[2] = colisao_direita
         colisoes_verdadeiras[3] = colisao_baixo
         return colisoes_verdadeiras
-
-
-class Colisoes():
-
-    def __init__(self):
-        pass
