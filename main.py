@@ -21,18 +21,8 @@ inventario = Inventario(janela)
 tecla_solta = True
 
 # Cenarios
-prologo = TelaPrologo("Imagens/" + InformacoesBase.resolucao + "prologo1.png")
-prologo_2 = TelaPrologo("Imagens/" + InformacoesBase.resolucao + "prologo2.png")
-manual = TelaPrologo("Imagens/" + InformacoesBase.resolucao + "manual.png")
-cenario_0 = Cenario0()
-cenario_1 = Cenario1()
-cenario_2 = Cenario2()
-cenario_atual = cenario_0
-
-# Mostra o prologo
-prologo.tela(janela)
-prologo_2.tela(janela)
-manual.tela(janela)
+menu_principal = MenuPrincipal("Imagens/" + InformacoesBase.resolucao + "Cenario_2.png", "cenario_0")
+cenario_atual = menu_principal
 
 # Jogador
 jogador = Personagem()
@@ -45,7 +35,6 @@ quantia_vida = 0
 # Sons
 musica_atual = None
 musica_trocada = True
-som_passos = pygame.mixer.Sound(cenario_atual.som_passos)
 TEMPO_PASSOS = (jogador.tempo_animacao / 100) / 2.8
 cronometro_passos = 0
 
@@ -68,6 +57,31 @@ cronometro_troca_cenario = 0
 # Game Loop
 while True:
     ################### Entrada de Dados ######################
+
+    # Reseta o jogo quando começa um novo
+    if cenario_atual == menu_principal:
+        # Toca musica do menu principal
+        pygame.mixer.music.load("Sons/musica_menu_principal.ogg")
+        pygame.mixer.music.set_volume(1)
+        pygame.mixer.music.play(-1)
+        # Mostra o menu principal
+        menu_principal.tela(janela)
+        # Inicializa os cenários
+        prologo = TelaPrologo("Imagens/" + InformacoesBase.resolucao + "prologo1.png")
+        prologo_2 = TelaPrologo("Imagens/" + InformacoesBase.resolucao + "prologo2.png")
+        manual = TelaPrologo("Imagens/" + InformacoesBase.resolucao + "manual.png")
+        cenario_0 = Cenario0()
+        cenario_1 = Cenario1()
+        cenario_2 = Cenario2()
+        cenario_atual = cenario_0
+        # inicializa o som dos passos
+        InformacoesBase.trocando_cenario = True
+        # som_passos = pygame.mixer.Sound(cenario_atual.som_passos)
+        # Mostra o prologo
+        prologo.tela(janela)
+        prologo_2.tela(janela)
+        manual.tela(janela)
+
     sprite_jogador = jogador.sprite
     cenario_atual = eval(cenario_atual.proxima_fase(jogador, inimigos))
     itens_cenario_atual = cenario_atual.itens
@@ -84,12 +98,18 @@ while True:
     ################### Updates ###############################
 
     if InformacoesBase.morreu:
-        cenario_atual = TelaMorte("Imagens/" + InformacoesBase.resolucao + "Tela_de_morte.png").tela(janela)
+        InformacoesBase.morreu = False
+        Menu("Imagens/" + InformacoesBase.resolucao + "Tela_de_morte.png", "menu_principal").tela(janela)
+        cenario_atual = menu_principal
+        continue
 
     if InformacoesBase.terminou_jogo:
-        cenario_atual = TelaMorte("Imagens/" + InformacoesBase.resolucao + "epilogo.png").tela(janela)
+        InformacoesBase.terminou_jogo = False
+        Menu("Imagens/" + InformacoesBase.resolucao + "epilogo.png", "menu_principal").tela(janela)
+        cenario_atual = menu_principal
+        continue
 
-
+    print(sprite_jogador.y)
     if InformacoesBase.trocando_cenario or musica_atual is None:
         musica_atual = cenario_atual.som_cenario
         pygame.mixer.music.load(musica_atual)
@@ -148,7 +168,6 @@ while True:
         InformacoesBase.trocando_cenario = False
         cronometro_troca_cenario = 0
 
-
     # Colisões cenário
     cenario_atual.colisoes_cenario(jogador)
 
@@ -196,7 +215,8 @@ while True:
                 itens_cenario_atual.pop(i)
             else:
                 janela.draw_text("Inventário Cheio",
-                                 janela.width / 2, janela.height * 2 / 3, int(40 / F_R), (0, 255, 105), "Arial", True, True)
+                                 janela.width / 2, janela.height * 2 / 3, int(40 / F_R), (0, 255, 105), "Arial", True,
+                                 True)
             break
 
     # Escolhe o sprite do jogador

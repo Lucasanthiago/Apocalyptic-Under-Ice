@@ -27,5 +27,6 @@ class BarraVida:
                                                     True, False)
         pygame.draw.rect(self.tela, (34, 139, 34), ((75 / self.F_R), (24 / self.F_R), self.largura_maxima +
                                                     (10 / self.F_R), (30 / self.F_R)))
-        pygame.draw.rect(self.tela, (173, round(taxa_vida_barra), 47), ((80 / self.F_R),
+        print("taxa:", taxa_vida_barra)
+        pygame.draw.rect(self.tela, (173, round(taxa_vida_barra * self.F_R), 47), ((80 / self.F_R),
                                                     (29 / self.F_R), taxa_vida_barra, (20 / self.F_R)))

@@ -346,7 +346,7 @@ class Aliados:
                 self.conversa(janela, sprite_atual)
             else:
                 janela.draw_text(self.interacao + self.nome_aliado_exibir,
-                                 sprite_atual.x - (260 / self.F_R), sprite_atual.y + (100 / self.F_R),
+                                 jogador.sprite.x - (300 / self.F_R), jogador.sprite.y + (100 / self.F_R),
                                  int(20 / self.F_R), (12, 34, 110), "Arial", True, True)
 
     def conversa(self, janela, sprite_jogador):
