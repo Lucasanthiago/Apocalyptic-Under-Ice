@@ -16,39 +16,14 @@ janela = InformacoesBase.janela
 InformacoesBase.fator_redimensionamento = InformacoesBase.resolucao_base[0] / janela.width
 F_R = InformacoesBase.fator_redimensionamento
 
-# Inventário
-inventario = Inventario(janela)
-tecla_solta = True
-
-# Cenarios
+# Menu Principal
 menu_principal = MenuPrincipal("Imagens/" + InformacoesBase.resolucao + "Cenario_2.png", "cenario_0")
 cenario_atual = menu_principal
-
-# Jogador
-jogador = Personagem()
-ultimo_mov_D = True
-sprite_jogador = jogador.sprite
-sprite_jogador.y = (400 / F_R)
-pode_recuperar_vida = True
-quantia_vida = 0
 
 # Sons
 musica_atual = None
 musica_trocada = True
-TEMPO_PASSOS = (jogador.tempo_animacao / 100) / 2.8
 cronometro_passos = 0
-
-# Inimigos
-inimigos = []
-
-# Aliados
-aliados = []
-
-# Arma
-matriz_tiros = []
-
-# Barra de Vida
-barra_de_vida = BarraVida(jogador, janela)
 
 # Troca de cenarios
 TEMPO_SEGURANCA_TROCA_CENARIO = 0.05
@@ -74,9 +49,28 @@ while True:
         cenario_1 = Cenario1()
         cenario_2 = Cenario2()
         cenario_atual = cenario_0
+        # Inicializa Inventario
+        inventario = Inventario(janela)
+        tecla_solta = True
+        # Inicializa Jogador
+        jogador = Personagem()
+        ultimo_mov_D = True
+        sprite_jogador = jogador.sprite
+        sprite_jogador.y = (400 / F_R)
+        pode_recuperar_vida = True
+        quantia_vida = 0
+        TEMPO_PASSOS = (jogador.tempo_animacao / 100) / 2.8
         # inicializa o som dos passos
         InformacoesBase.trocando_cenario = True
-        # som_passos = pygame.mixer.Sound(cenario_atual.som_passos)
+        # Barra de Vida
+        barra_de_vida = BarraVida(jogador, janela)
+        # Inimigos
+        inimigos = []
+        # Aliados
+        aliados = []
+        # Arma
+        matriz_tiros = []
+
         # Mostra o prologo
         prologo.tela(janela)
         prologo_2.tela(janela)
